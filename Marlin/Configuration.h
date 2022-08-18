@@ -21,6 +21,340 @@
  */
 #pragma once
 
+//JUST uncomment the option for your machine
+#define V6_330_TITAN_TMC 1
+// #define V6_330_TITAN_NO_TMC 1
+// #define V6_330_NO_TITAN_TMC 1
+// #define V6_330_NO_TITAN_NO_TMC 1
+// #define V6_400_TITAN_TMC 1
+// #define V6_400_NO_TITAN_TMC 1
+// #define V6_500_TITAN_TMC 1
+
+// #define V5_330_TITAN_TMC 1
+// #define V5_330_TITAN_NO_TMC 1
+// #define V5_330_NO_TITAN_TMC 1
+// #define V5_330_NO_TITAN_NO_TMC 1
+
+// #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
+// #define XY3_V5_330_NO_TITAN_TMC_NO_ABL 1
+
+// #define D01_V8_220_TITAN_TMC_NO_ABL 1
+
+// XY2 Thanks to Emmanuel Hayez!
+// #define XY2_V6_255_NO_TITAN_TMC 1
+// #define XY2_V6_255_TITAN_TMC 1
+// #define XY2_V6_255_BMG_TMC 1
+// #define XY2_V6_255M_BMG_TMC 1
+
+// #define XY2_V5_255_NO_TITAN_TMC 1
+// #define XY2_V5_255_TITAN_TMC 1
+// #define XY2_V5_255_TITAN_NO_TMC 1
+// #define XY2_V5_255_NO_TITAN_NO_TMC 1
+// #define XY2_V5_220_NO_TITAN_TMC 1
+// #define XY2_V5_220_TITAN_TMC 1
+// #define XY2_V5_220_NO_TITAN_NO_TMC 1
+// #define XY2_V5_220_TITAN_NO_TMC 1
+
+// #define BTT_SKR_TURBO_330_NO_TITAN_TMC_2209_UART 1
+
+// #define TFT_LVGL_UI
+// #define TFT_CLASSIC_UI
+ #define TFT_COLOR_UI
+
+//Uncomment for BLTOUCH Enable AND MAGNETIC sensor Disable, one line config
+#define BLTOUCH_WIFISLOT 
+
+#if V6_330_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 340
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan TMC"
+  #define COREXY
+
+#elif V6_330_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  //#define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan"
+  #define COREXY
+
+#elif V6_330_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 TMC"
+  #define COREXY
+
+#elif V6_330_NO_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6"
+  #define COREXY
+
+#elif V6_400_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 400
+  #define Y_BED_SIZE 400
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 400 Titan TMC"
+  #define COREXY
+
+#elif V6_400_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 400
+  #define Y_BED_SIZE 400
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 400 TMC"
+  #define COREXY
+
+#elif V6_500_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 500
+  #define Y_BED_SIZE 500
+  #define Z_MAX_POS 500
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 500 Titan TMC"
+  #define COREXY
+
+#elif V5_330_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 Titan TMC"
+  #define COREXY
+
+#elif V5_330_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 Titan"
+  #define COREXY
+
+#elif V5_330_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 TMC"
+  #define COREXY
+
+#elif V5_330_NO_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330"
+  #define COREXY
+
+#elif D01_V8_220_TITAN_TMC_NO_ABL
+  // The V8-190729 is similar to the V5
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define D01_MODELS 1
+  #define WITHOUT_ABL 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 220
+
+  #define CUSTOM_MACHINE_NAME "Tronxy D01 220"
+  #define COREXY
+
+#elif XY3_V5_330_NO_TITAN_TMC_NO_ABL
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITHOUT_ABL 1
+  #define XY3_MODELS 1
+  #define X_BED_SIZE 300
+  #define Y_BED_SIZE 300
+  #define Z_MAX_POS 330
+  #define CUSTOM_MACHINE_NAME "Tronxy XY3 300"
+
+#elif XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITHOUT_ABL 1
+  #define XY3_MODELS 1
+  #define X_BED_SIZE 310
+  #define Y_BED_SIZE 310
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy XY3 310"
+
+#elif XY2_V6_255_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V6_255_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V6_255_BMG_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITH_BMG 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V6_255M_BMG_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITH_BMG 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 330
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO M"
+  // My config optimisation
+  #define S_CURVE_ACCELERATION
+  #define DEFAULT_Kp 18.33
+  #define DEFAULT_Ki 1.15
+  #define DEFAULT_Kd 73.12
+
+#elif XY2_V5_255_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_255_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_255_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 0
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define T2_LEADSCREW 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_255_NO_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_220_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif XY2_V5_220_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif XY2_V5_220_NO_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define T2_LEADSCREW 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif XY2_V5_220_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define T2_LEADSCREW 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif BTT_SKR_TURBO_330_NO_TITAN_TMC_2209_UART
+  // You need to set `default_env = LPC1769` in platformio.ini
+  #define MOTHERBOARD BOARD_BTT_SKR_V1_4_TURBO
+  #define WITH_TMC_2209_UART 1
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA SKR Turbo"
+  #define COREXY
+  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+
+#endif
+
 /**
  * Configuration.h
  *
@@ -81,13 +415,15 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-//#define CUSTOM_STATUS_SCREEN_IMAGE
+#ifdef TFT_CLASSIC_UI
+#define CUSTOM_STATUS_SCREEN_IMAGE
+#endif
 
 // @section machine
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define MOTHERBOARD BOARD_CHITU3D_V6
 #endif
 
 /**
@@ -111,7 +447,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 
 //#define BAUD_RATE_GCODE     // Enable G-code M575 to set the baud rate
 
@@ -135,7 +471,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Tronxy X5SA"
+//#define CUSTOM_MACHINE_NAME "Tronxy X5SA"   // fait plus haut
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -156,29 +492,58 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  A4988
-#define Y_DRIVER_TYPE  A4988
-#define Z_DRIVER_TYPE  A4988
-//#define X2_DRIVER_TYPE A4988
-//#define Y2_DRIVER_TYPE A4988
-//#define Z2_DRIVER_TYPE A4988
-//#define Z3_DRIVER_TYPE A4988
-//#define Z4_DRIVER_TYPE A4988
-//#define I_DRIVER_TYPE  A4988
-//#define J_DRIVER_TYPE  A4988
-//#define K_DRIVER_TYPE  A4988
-//#define U_DRIVER_TYPE  A4988
-//#define V_DRIVER_TYPE  A4988
-//#define W_DRIVER_TYPE  A4988
-#define E0_DRIVER_TYPE A4988
-//#define E1_DRIVER_TYPE A4988
-//#define E2_DRIVER_TYPE A4988
-//#define E3_DRIVER_TYPE A4988
-//#define E4_DRIVER_TYPE A4988
-//#define E5_DRIVER_TYPE A4988
-//#define E6_DRIVER_TYPE A4988
-//#define E7_DRIVER_TYPE A4988
-
+#ifdef WITH_TMC
+  #define X_DRIVER_TYPE TMC2208_STANDALONE
+  #define Y_DRIVER_TYPE TMC2208_STANDALONE
+  #define Z_DRIVER_TYPE TMC2208_STANDALONE
+  //#define X2_DRIVER_TYPE A4988
+  //#define Y2_DRIVER_TYPE A4988
+  //#define Z2_DRIVER_TYPE A4988
+  //#define Z3_DRIVER_TYPE A4988
+  //#define Z4_DRIVER_TYPE A4988
+  #define E0_DRIVER_TYPE TMC2208_STANDALONE
+  //#define E1_DRIVER_TYPE A4988
+  //#define E2_DRIVER_TYPE A4988
+  //#define E3_DRIVER_TYPE A4988
+  //#define E4_DRIVER_TYPE A4988
+  //#define E5_DRIVER_TYPE A4988
+  //#define E6_DRIVER_TYPE A4988
+  //#define E7_DRIVER_TYPE A4988
+#elif WITH_TMC_2209_UART
+  #define X_DRIVER_TYPE TMC2209
+  #define Y_DRIVER_TYPE TMC2209
+  #define Z_DRIVER_TYPE TMC2209
+  //#define X2_DRIVER_TYPE A4988
+  //#define Y2_DRIVER_TYPE A4988
+  //#define Z2_DRIVER_TYPE A4988
+  //#define Z3_DRIVER_TYPE A4988
+  //#define Z4_DRIVER_TYPE A4988
+  #define E0_DRIVER_TYPE TMC2209
+  #define E1_DRIVER_TYPE TMC2209
+  //#define E2_DRIVER_TYPE A4988
+  //#define E3_DRIVER_TYPE A4988
+  //#define E4_DRIVER_TYPE A4988
+  //#define E5_DRIVER_TYPE A4988
+  //#define E6_DRIVER_TYPE A4988
+  //#define E7_DRIVER_TYPE A4988
+#else
+  #define X_DRIVER_TYPE  A4988
+  #define Y_DRIVER_TYPE  A4988
+  #define Z_DRIVER_TYPE  A4988
+  //#define X2_DRIVER_TYPE A4988
+  //#define Y2_DRIVER_TYPE A4988
+  //#define Z2_DRIVER_TYPE A4988
+  //#define Z3_DRIVER_TYPE A4988
+  //#define Z4_DRIVER_TYPE A4988
+  #define E0_DRIVER_TYPE A4988
+  //#define E1_DRIVER_TYPE A4988
+  //#define E2_DRIVER_TYPE A4988
+  //#define E3_DRIVER_TYPE A4988
+  //#define E4_DRIVER_TYPE A4988
+  //#define E5_DRIVER_TYPE A4988
+  //#define E6_DRIVER_TYPE A4988
+  //#define E7_DRIVER_TYPE A4988
+#endif
 /**
  * Additional Axis Settings
  *
@@ -1482,11 +1847,11 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -40, 0, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { -35, 0, -1.0 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 50
+#define PROBING_MARGIN 40
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (133*60)
@@ -1542,7 +1907,7 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-//#define MULTIPLE_PROBING 2
+#define MULTIPLE_PROBING 2
 //#define EXTRA_PROBING    1
 
 /**
@@ -1571,7 +1936,9 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
+#ifndef WITHOUT_ABL
 #define Z_MIN_PROBE_REPEATABILITY_TEST
+#endif
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1639,9 +2006,23 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR false
+#if defined(XY3_MODELS) || defined(XY2_MODELS) || defined(D01_MODELS) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
+  #define INVERT_X_DIR false
+#else
+  #define INVERT_X_DIR true
+#endif
+
+#if defined(XY2_MODELS) || defined(D01_MODELS) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
+  #define INVERT_Y_DIR false
+#else
+  #define INVERT_Y_DIR true
+#endif
+
+#if defined(XY3_MODELS) || defined(XY2_MODELS) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
+  #define INVERT_Z_DIR true
+#else
+  #define INVERT_Z_DIR false
+#endif
 //#define INVERT_I_DIR false
 //#define INVERT_J_DIR false
 //#define INVERT_K_DIR false
@@ -1652,7 +2033,11 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
+#if defined(WITH_TITAN) || defined(WITH_BMG) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
+  #define INVERT_E0_DIR true
+#else
+  #define INVERT_E0_DIR false
+#endif
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -1693,8 +2078,8 @@
 // @section geometry
 
 // The size of the printable area
-#define X_BED_SIZE 330
-#define Y_BED_SIZE 330
+//#define X_BED_SIZE 330		// fait plus haut
+//#define Y_BED_SIZE 330
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1702,7 +2087,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 400
+//#define Z_MAX_POS 400			// fait plus haut
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
@@ -1777,7 +2162,7 @@
 
   #define FIL_RUNOUT_STATE     HIGH       // Pin state indicating that filament is NOT present.
   //#define FIL_RUNOUT_PULLUP             // Use internal pullup for filament runout pins.
-  //#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
+  #define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
   //#define WATCH_ALL_RUNOUT_SENSORS      // Execute runout script on any triggering sensor, not only for the active extruder.
                                           // This is automatically enabled for MIXING_EXTRUDERs.
 
@@ -1817,7 +2202,11 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
+  #ifndef TFT_LVGL_UI
   #define FILAMENT_RUNOUT_SCRIPT "M600"
+  #else
+  #define FILAMENT_RUNOUT_SCRIPT "M25"
+  #endif
 
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
@@ -1872,7 +2261,11 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR
+#if WITHOUT_ABL
+  #define MESH_BED_LEVELING
+#else
+  #define AUTO_BED_LEVELING_BILINEAR
+#endif
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
@@ -1948,7 +2341,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 4
+  #define GRID_MAX_POINTS_X 5
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
@@ -1958,7 +2351,7 @@
 
     // Beyond the probed grid, continue the implied tilt?
     // Default is to maintain the height of the nearest edge.
-    //#define EXTRAPOLATE_BEYOND_GRID
+    #define EXTRAPOLATE_BEYOND_GRID
 
     //
     // Experimental Subdivision of the grid by Catmull-Rom method.
@@ -2088,12 +2481,19 @@
 #define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
+//  #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
+//  #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
+  #define Z_SAFE_HOMING_X_POINT 15   // X point for Z homing		jbo (10 + le decalage du catpeur NOZZLE_TO_PROBE_OFFSET ou PROBING_MARGIN)
+  #define Z_SAFE_HOMING_Y_POINT 40  // Y point for Z homing		jbo
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+#if defined(XY2_MODELS)
+  // Slow down the X/Y homing
+  #define HOMING_FEEDRATE_MM_M { (35*60), (35*60), (4*60) }
+#else
+  #define HOMING_FEEDRATE_MM_M { (40*60), (40*60), (4*60) }
+#endif
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2210,7 +2610,7 @@
 //
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 180
-#define PREHEAT_1_TEMP_BED     50
+#define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_TEMP_CHAMBER 35
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
@@ -2237,7 +2637,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS + 15), (Y_MIN_POS + 0), 1 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
   #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
@@ -2281,7 +2681,7 @@
  *   Caveats: The ending Z should be the same as starting Z.
  * Attention: EXPERIMENTAL. G-code arguments may change.
  */
-//#define NOZZLE_CLEAN_FEATURE
+#define NOZZLE_CLEAN_FEATURE
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
   // Default number of pattern repetitions
@@ -2292,8 +2692,8 @@
 
   // Specify positions for each tool as { { X, Y, Z }, { X, Y, Z } }
   // Dual hotend system may use { {  -20, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) },  {  420, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) }}
-  #define NOZZLE_CLEAN_START_POINT { {  30, 30, (Z_MIN_POS + 1) } }
-  #define NOZZLE_CLEAN_END_POINT   { { 100, 60, (Z_MIN_POS + 1) } }
+  #define NOZZLE_CLEAN_START_POINT { { 25, 0, (Z_MIN_POS + 1) } }
+  #define NOZZLE_CLEAN_END_POINT   { { 60, 7, (Z_MIN_POS + 1) } }
 
   // Circular pattern radius
   #define NOZZLE_CLEAN_CIRCLE_RADIUS 6.5
@@ -3071,8 +3471,9 @@
 //
 // 480x320, 3.5", FSMC Stock Display from TronxXY
 //
-#define TFT_TRONXY_X5SA
-
+#if MOTHERBOARD != BOARD_BTT_SKR_V1_4_TURBO
+  #define TFT_TRONXY_X5SA
+#endif
 //
 // 480x320, 3.5", FSMC Stock Display from AnyCubic
 //
@@ -3112,11 +3513,11 @@
   #define TFT_DRIVER AUTO
 
   // Interface. Enable one of the following options:
-  #define TFT_INTERFACE_FSMC
+  //#define TFT_INTERFACE_FSMC
   //#define TFT_INTERFACE_SPI
 
   // TFT Resolution. Enable one of the following options:
-  #define TFT_RES_320x240
+  //#define TFT_RES_320x240
   //#define TFT_RES_480x272
   //#define TFT_RES_480x320
   //#define TFT_RES_1024x600
@@ -3133,7 +3534,7 @@
  *   root of your SD card, together with the compiled firmware.
  */
 //#define TFT_CLASSIC_UI
-#define TFT_COLOR_UI
+//#define TFT_COLOR_UI    // fait plus haut
 //#define TFT_LVGL_UI
 
 #if ENABLED(TFT_LVGL_UI)
@@ -3166,7 +3567,10 @@
 //
 // Touch Screen Settings
 //
-#define TOUCH_SCREEN
+#if ANY(TFT_COLOR_UI, TFT_LVGL_UI, TFT_CLASSIC_UI)
+  #define TOUCH_SCREEN
+#endif
+//DONE BY CHITU BOARD
 #if ENABLED(TOUCH_SCREEN)
   #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
   #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
@@ -3336,7 +3740,11 @@
  * Set this manually if there are extra servos needing manual control.
  * Set to 0 to turn off servo support.
  */
-//#define NUM_SERVOS 3 // Note: Servo index starts with 0 for M280-M282 commands
+#ifdef BLTOUCH_WIFISLOT 
+    #define NUM_SERVOS 1
+#else
+	//#define NUM_SERVOS 3 // Note: Servo index starts with 0 for M280-M282 commands
+#endif
 
 // (ms) Delay before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
