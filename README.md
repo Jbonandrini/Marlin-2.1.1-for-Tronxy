@@ -40,4 +40,10 @@ Avec ces modifications, le BLTOUCH, les commandes M993, M993 i, M994 et M994 i f
   
 Attention les fichiers dans le répertoire config ne sont pas opérationnels (c'est ceux fournis par Marlin et jamais validés)  
 
-## Reste a intégrer le pré affichage sur le LDC de image du fichier a imprimer
+## Pré affichage sur le LDC de image du fichier a imprimer
+
+J'ai modifier le fichier  
+Marlin/src/lcd/tft/ui_480x320.cpp  
+et tout est OK  
+
+Je vous souhaite de bonnes impressions

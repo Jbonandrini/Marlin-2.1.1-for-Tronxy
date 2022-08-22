@@ -419,30 +419,320 @@ void TFT::draw_edit_screen_buttons() {
   #endif
 }
 
+static bool longName2DosName(const char *longName, char *dosName) {
+  uint8_t i;
+  uint8_t d_l;
+  char d;
+  d_l = strlen(longName);
+  d = longName[8];
+  if (d != '.') d = longName[7];
+  if (d != '.') d = longName[6];
+  for (i=0; i<d_l;i++) {
+	  if (longName[i] == '.') {
+		  if (d_l-i-1>3) d = '+';
+		  break;
+	  }
+  }
+  for (i = FILENAME_LENGTH; i--;) dosName[i] = '\0';
+  i=0;
+  while (*longName) {
+    uint8_t c = *longName++;
+    if (c == '.') { // For a dot...
+      if (i == 0) return false;
+	  if (d == '+') {
+		strcat_P(dosName, PSTR("~1.GCO"));
+	  } else {
+		strcat_P(dosName, PSTR(".GCO"));
+	  }
+      break;
+    } else {
+      if (c < 0x21 || c == 0x7F) return false;                  // Check size, non-printable characters
+      // Fail for illegal characters
+      PGM_P p = PSTR("|<>^+=?/[];,*\"\\");
+      while (const uint8_t b = pgm_read_byte(p++)) if (b == c) return false;
+      dosName[i++] = c + (WITHIN(c, 'a', 'z') ? 'A' - 'a' : 0); // Uppercase required for 8.3 name
+    }
+	if (d != '.') {
+		if (i >= 6) {
+		  strcat_P(dosName, PSTR("~1.GCO"));
+		  break;
+		}
+	}
+  }
+  return dosName[0] != '\0'; // Return true if any name was set
+}
+
 // The Select Screen presents a prompt and two "buttons"
 void MenuItem_confirm::draw_select_screen(FSTR_P const yes, FSTR_P const no, const bool yesno, FSTR_P const pref, const char * const string/*=nullptr*/, FSTR_P const suff/*=nullptr*/) {
   uint16_t line = 1;
+	if (!string) line++;
 
-  if (!string) line++;
+	if (strcmp((PGM_P)pref, (PGM_P)GET_TEXT(MSG_START_PRINT)) != 0) {
+		menu_line(line++);
+		tft_string.set(pref);
+		tft_string.trim();
+		tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
 
-  menu_line(line++);
-  tft_string.set(pref);
-  tft_string.trim();
-  tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+		if (string) {
+			menu_line(line++);
+			tft_string.set(string);
+			tft_string.trim();
+			tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+		}
 
-  if (string) {
-    menu_line(line++);
-    tft_string.set(string);
-    tft_string.trim();
-    tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
-  }
+		if (suff) {
+			menu_line(line);
+			tft_string.set(suff);
+			tft_string.trim();
+			tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+		}
+	} else {
+		uint8_t buff[1024];
+		uint8_t flag_ok = 1;
+		uint16_t nb_r;
+		uint16_t i;
+		uint16_t j;
+		uint16_t x_w;
+		uint16_t y_h;
+		uint32_t i_d;
+		uint32_t t_d;
+		uint16_t b_max;
+		uint16_t nb_pix;
+		uint16_t nb_display;
+		uint32_t nb_p;
+		uint16_t mem_max;
+		uint16_t offset;
+		uint16_t pix[4096];
+		uint16_t mem_pix;
+		uint16_t nb_pixel_ident;
+		char cur_name[40];
+		char dosName[40];
 
-  if (suff) {
-    menu_line(line);
-    tft_string.set(suff);
-    tft_string.trim();
-    tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
-  }
+		offset = 0;
+		nb_p = 0;
+		mem_max = 4096;
+		strcpy(cur_name, string);
+		if (string[0] == ' ') {
+			for (i=1;i<=strlen(string);i++) {
+				cur_name[i-1] = string[i];
+			}
+			cur_name[i] = 0;
+		}
+        SdFile file, *curDir;
+        const char * const fname = card.diveToFile(true, curDir, cur_name);
+		if (file.open(curDir, fname, O_READ)) {
+			file.getDosName(cur_name);
+			file.close();
+		}
+		longName2DosName(cur_name, dosName);
+
+		card.openFileRead((char*)dosName);
+		if (card.isFileOpen()) {
+			b_max = 0;
+			nb_r = 0;
+			x_w = 0;
+			y_h = 0;
+			nb_pix = 0;
+			nb_display = 0;
+			char tmp[10];
+			card.read(buff, 1);
+			while (buff[nb_r] != 0x0A) {
+				nb_r++;
+				if (nb_r >= 1023) break;
+				if (card.read(buff+nb_r, 1) != 1) break;
+			}
+			buff[nb_r] = 0;
+			if (strlen((char*)buff)>b_max) b_max = strlen((char*)buff);
+			if ((nb_r >0) && (buff[nb_r-1] == 0x0D)) buff[nb_r-1] = 0;
+			if (nb_r > 5) {
+				menu_line(0);
+				tft.add_image(0, 0, imgSD, 0xF800);			// jbo
+				if (strncmp((char*)buff, "M4010", 5) == 0) {
+					if (buff[6] == 'X') {
+						j = 7;
+						i =0 ;
+						tmp[i] = buff[j];
+						while (buff[j] != ' ') {
+							i++;
+							j++;
+							if (j> nb_r) break;
+							tmp[i] = buff[j];
+						}
+						tmp[i] = 0;
+						x_w = (uint16_t)strtol((char*)tmp, nullptr, 10);
+						j++;
+						if (buff[j] == 'Y') {
+							j++;
+							i =0 ;
+							tmp[i] = buff[j];
+							while (buff[j] != ' ') {
+								i++;
+								j++;
+								if (j> nb_r) break;
+								tmp[i] = buff[j];
+							}
+							tmp[i] = 0;
+							y_h = (uint16_t)strtol(tmp, nullptr, 10);
+							nb_pix = 0;
+							menu_line(0);
+							offset = 0;
+							memcpy(buff, "M4010", 5);
+							while (strncmp((char*)buff, "M4010", 5) == 0) {
+								card.read(buff, 1);
+								nb_r = 0;
+								while (buff[nb_r] != 0x0A) {
+									nb_r++;
+									if (nb_r >= 1023) break;
+									if (card.read(buff+nb_r, 1) != 1) break;
+								}
+								buff[nb_r] = 0;
+								if (strlen((char*)buff)>b_max) b_max = strlen((char*)buff);
+								if ((nb_r >0) && (buff[nb_r-1] == 0x0D)) buff[nb_r-1] = 0;
+								if (nb_r > 5) {
+									if (strncmp((char*)buff, "M4010", 5) != 0) {
+										break;
+									} else {
+										if (buff[6] == 'I') {
+											i_d = 0;
+											t_d = 0;
+											j = 7;
+											i =0 ;
+											tmp[i] = buff[j];
+											while (buff[j] != ' ') {
+												i++;
+												j++;
+												if (j> nb_r) break;
+												tmp[i] = buff[j];
+											}
+											tmp[i] = 0;
+											i_d = (uint32_t)strtol((char*)tmp, nullptr, 10);
+											if (i_d != nb_p) {
+												tft.add_image(0, 0, imgSD, 0xFFFF);			// jbo
+												break;
+											}
+											j++;
+											if (buff[j] == 'T') {
+												j++;
+												i =0 ;
+												tmp[i] = buff[j];
+												while (buff[j] != ' ') {
+													i++;
+													j++;
+													if (j> nb_r) break;
+													tmp[i] = buff[j];
+												}
+												t_d = (uint32_t)strtol(tmp, nullptr, 10);
+												nb_p = i_d + t_d;
+												j = j+2;
+												while (j < nb_r) {
+													tmp[0] = buff[j];
+													if (buff[j] == '\'') break;
+													j++;
+													tmp[1] = buff[j];
+													j++;
+													tmp[2] = buff[j];
+													j++;
+													tmp[3] = buff[j];
+													tmp[4] = 0;
+													if (nb_pix < mem_max) {
+														pix[nb_pix] = (uint16_t)strtol((char*)tmp, nullptr, 16);
+														mem_pix = pix[nb_pix];
+														nb_pix++;
+														if (nb_pix >= 8*x_w) {
+															tft.set_window((480-x_w)/2, ((320-y_h)/2)+offset, x_w-1+(480-x_w)/2, ((320-y_h)/2)+offset+8-1);
+															tft.write_sequence(pix, nb_pix);
+															offset = offset + 8;
+															nb_pix = 0;
+															nb_display++;
+														}
+													} else {
+														flag_ok = 0;
+													}
+													j++;
+													tmp[0] = buff[j];
+													if (buff[j] == '\'') break;
+													if ((buff[j] == '3') && ((mem_pix & 0x0020)==0x0020)) {
+														tmp[0] = buff[j+1];
+														tmp[1] = buff[j+2];
+														tmp[2] = buff[j+3];
+														tmp[3] = 0;
+														nb_pixel_ident = (uint16_t)strtol((char*)tmp, nullptr, 16);
+														if (nb_pixel_ident > 1) {
+															j=j+4;
+															for (i=1; i<nb_pixel_ident; i++) {
+																pix[nb_pix] = mem_pix;
+																nb_pix++;
+																if (nb_pix >= 8*x_w) {
+																	tft.set_window((480-x_w)/2, ((320-y_h)/2)+offset, x_w-1+(480-x_w)/2, ((320-y_h)/2)+offset+8-1);
+																	tft.write_sequence(pix, nb_pix);
+																	offset = offset + 8;
+																	nb_pix = 0;
+																	nb_display++;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				} else {
+					flag_ok = 0;
+				}
+				if (nb_pix != 0) {
+					tft.set_window((480-x_w)/2, ((320-y_h)/2)+offset, x_w-1+(480-x_w)/2, ((320-y_h)/2)+offset+(nb_pix/x_w)-1);
+					tft.write_sequence(pix, nb_pix);
+					nb_display++;
+				}
+			} else {
+				flag_ok = 0;
+			}
+			card.closefile();
+		} else {
+			flag_ok = 1;
+			tft.add_image(0, 100, imgSD, 0xFFE0);			// jbo
+//			tft.add_image(0, 0, imgSD, 0x001F);			// jbo
+			sprintf((char*)buff, "-%s- -%s-", fname, dosName);
+			menu_line(3);
+			tft_string.set((FSTR_P)buff);
+			tft_string.trim();
+			tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+		}
+//		sprintf((char*)buff, "%d %d %d -%s- %04X%04X", x_w, y_h, nb_pix, fname, pix[0], pix[2]);
+/*		sprintf((char*)buff, "%d %d %d %d", x_w, y_h, nb_display, b_max);
+		menu_line(4);
+		tft_string.set(buff);
+		tft_string.trim();
+		tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);*/
+		if (flag_ok == 0) {
+			line = 1;
+			if (!string) line++;
+
+				menu_line(line++);
+				tft_string.set(pref);
+				tft_string.trim();
+				tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+
+			if (string) {
+				menu_line(line++);
+				tft_string.set(string);
+				tft_string.trim();
+				tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+			}
+
+			if (suff) {
+				menu_line(line);
+				tft_string.set(suff);
+				tft_string.trim();
+				tft.add_text(tft_string.center(TFT_WIDTH), 0, COLOR_MENU_TEXT, tft_string);
+			}
+		}
+	}
+
   #if ENABLED(TOUCH_SCREEN)
     if (no)  add_control( 88, TFT_HEIGHT - 64, CANCEL,  imgCancel,  true, yesno ? HALF(COLOR_CONTROL_CANCEL) : COLOR_CONTROL_CANCEL);
     if (yes) add_control(328, TFT_HEIGHT - 64, CONFIRM, imgConfirm, true, yesno ? COLOR_CONTROL_CONFIRM : HALF(COLOR_CONTROL_CONFIRM));
