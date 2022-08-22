@@ -24,5 +24,20 @@ Download earlier versions of Marlin on the [Releases page](https://github.com/Ma
 ## Configuration pour Tronxy V5 and V6 cards
 
 le BLTOUCH avec le connecteur WIFI n'est que pour les cartes V6  
+  
+J'ai modifier les fichiers  
+        Marlin/Configuration.h  
+        Marlin/Configuration_adv.h  
+        Marlin/config.ini  
+        Marlin/src/gcode/control/M993_M994.cpp  
+        Marlin/src/libs/BL24CXX.cpp  
+        Marlin/src/libs/BL24CXX.h  
+        Marlin/src/libs/W25Qxx.cpp  
+        Marlin/src/pins/stm32f1/pins_CHITU3D_V6.h  
+        Marlin/src/pins/stm32f1/pins_CHITU3D_common.h  
+        ini/features.ini  
+Avec ces modifications, le BLTOUCH, les commandes M993, M993 i, M994 et M994 i fonctionnes  
+  
+Attention les fichiers dans le répertoire config ne sont pas opérationnels (c'est ceux fournis par Marlin et jamais validés)  
 
-## Ne pas utilisé pour l'instant (en cours de construction)
+## Reste a intégrer le pré affichage sur le LDC de image du fichier a imprimer

@@ -22,7 +22,7 @@
 
 #include "../inc/MarlinConfig.h"
 
-#if ENABLED(IIC_BL24CXX_EEPROM)
+#if (ENABLED(IIC_BL24CXX_EEPROM) || ENABLED(IIC_BL24C16_EEPROM))
 
 /**
  * PersistentStore for Arduino-style EEPROM interface
@@ -46,8 +46,14 @@
 
 // IO direction setting
 #ifdef __STM32F1__
+#if ENABLED(IIC_BL24CXX_EEPROM)		// PA11
   #define SDA_IN()  do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH &= 0XFFFF0FFF; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH |= 8 << 12; }while(0)
   #define SDA_OUT() do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH &= 0XFFFF0FFF; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH |= 3 << 12; }while(0)
+#endif
+#if ENABLED(IIC_BL24C16_EEPROM)		// PG1
+  #define SDA_IN()  do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRL &= 0XFFFFFF0F; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRL |= 8 << 4; }while(0)
+  #define SDA_OUT() do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRL &= 0XFFFFFF0F; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRL |= 3 << 4; }while(0)
+#endif
 #elif defined(STM32F1) || defined(STM32F4)
   #define SDA_IN()  SET_INPUT(IIC_EEPROM_SDA)
   #define SDA_OUT() SET_OUTPUT(IIC_EEPROM_SDA)
@@ -66,6 +72,10 @@
 
 // Initialize IIC
 void IIC::init() {
+  #if ENABLED(IIC_BL24C16_EEPROM)
+    SET_OUTPUT(IIC_EEPROM_WP);
+    WRITE(IIC_EEPROM_WP, HIGH);
+  #endif
   SET_OUTPUT(IIC_EEPROM_SDA);
   SET_OUTPUT(IIC_EEPROM_SCL);
   IIC_SCL_1();
@@ -169,6 +179,12 @@ uint8_t IIC::read_byte(unsigned char ack_chr) {
   return receive;
 }
 
+// set WP LOW or HIGH
+#if ENABLED(IIC_BL24C16_EEPROM)
+void IIC::WP(uint8_t state) {
+    WRITE(IIC_EEPROM_WP, state);
+}
+#endif
 /******************** EEPROM ********************/
 
 // Initialize the IIC interface
@@ -278,8 +294,15 @@ void BL24CXX::read(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead) {
 // pBuffer: the first address of the data array
 // NumToWrite: the number of data to be written
 void BL24CXX::write(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite) {
+  #if ENABLED(IIC_BL24C16_EEPROM)
+    IIC::WP(LOW);
+    delay_us(5);
+  #endif
   for (; NumToWrite; NumToWrite--, WriteAddr++)
     writeOneByte(WriteAddr, *pBuffer++);
+  #if ENABLED(IIC_BL24C16_EEPROM)
+    IIC::WP(HIGH);
+  #endif
 }
 
 #endif // IIC_BL24CXX_EEPROM

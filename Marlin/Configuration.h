@@ -62,7 +62,15 @@
  #define TFT_COLOR_UI
 
 //Uncomment for BLTOUCH Enable AND MAGNETIC sensor Disable, one line config
-#define BLTOUCH_WIFISLOT 
+#define BLTOUCH_WIFISLOT
+#define BLTOUCH
+#ifdef BLTOUCH
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false  // Set to true to invert the logic of the probe.
+  #define Z_MIN_ENDSTOP_INVERTING false  // Set to true to invert the logic of the endstop.
+#else
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING true  // Set to true to invert the logic of the probe.
+  #define Z_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
+#endif
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -1466,7 +1474,7 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
+//#define Z_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.    // fait plus haut
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define K_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1482,7 +1490,7 @@
 #define U_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define V_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define W_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true  // Set to true to invert the logic of the probe.
+//#define Z_MIN_PROBE_ENDSTOP_INVERTING true  // Set to true to invert the logic of the probe.    // jbo fait plus haut
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -1530,8 +1538,28 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 92.6 }
-// TITAN EXTRUDER:
+#if (WITH_TMC && WITH_BMG)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 830 }
+#elif (WITH_TMC && WITH_TITAN)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 764 }
+#elif (WITH_TMC && !WITH_TITAN && !WITH_BMG)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 186 }
+#elif (WITH_TITAN && !WITH_TMC)
+  #if defined(T2_LEADSCREW)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 420 }
+  #else
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 420 }
+  #endif
+#else
+  #if defined(T2_LEADSCREW)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 93 }
+  #else
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
+  #endif
+#endif
+
+// #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 420 }
+//TITAN EXTRUDER:
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 92.6 }
 
 /**
@@ -1647,7 +1675,11 @@
 #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
-#define USE_PROBE_FOR_Z_HOMING
+#if def BLTOUCH_WIFISLOT
+  #define USE_PROBE_FOR_Z_HOMING
+#else
+	//#define USE_PROBE_FOR_Z_HOMING
+#endif
 
 /**
  * Z_MIN_PROBE_PIN
@@ -1684,7 +1716,15 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE
+#ifdef WITHOUT_ABL
+  #define PROBE_MANUALLY
+#else
+  #ifdef BLTOUCH_WIFISLOT 
+        #define BLTOUCH
+  #else
+        #define FIX_MOUNTED_PROBE
+  #endif
+#endif
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -1701,7 +1741,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+//#define BLTOUCH		// fait plus haut/ BLTOUCH_WIFISLOT 
 
 /**
  * MagLev V4 probe by MDD
@@ -2486,7 +2526,8 @@
  */
 #define Z_SAFE_HOMING
 
-#if ENABLED(Z_SAFE_HOMING)
+//#if ENABLED(Z_SAFE_HOMING)
+#ifdef Z_SAFE_HOMING
 //  #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
 //  #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
   #define Z_SAFE_HOMING_X_POINT 15   // X point for Z homing		jbo (10 + le decalage du catpeur NOZZLE_TO_PROBE_OFFSET ou PROBING_MARGIN)

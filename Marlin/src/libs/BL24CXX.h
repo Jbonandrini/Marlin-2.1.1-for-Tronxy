@@ -42,6 +42,9 @@ protected:
   static uint8_t wait_ack();         // IIC waits for ACK signal
   static void ack();                 // IIC sends ACK signal
   static void nAck();                // IIC does not send ACK signal
+#if ENABLED(IIC_BL24C16_EEPROM)
+  static void WP(uint8_t state);     // IIC set Write Protect
+#endif
 };
 
 /******************** EEPROM ********************/

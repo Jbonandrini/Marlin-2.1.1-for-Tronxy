@@ -366,8 +366,9 @@ void W25QXXFlash::SPI_FLASH_BufferRead(uint8_t *pBuffer, uint32_t ReadAddr, uint
   // Send ReadAddr low nybble address byte to read from
   spi_flash_Send(ReadAddr & 0xFF);
 
-  if (NumByteToRead <= 32 || !flash_dma_mode) {
-    while (NumByteToRead--) { // While there is data to be read
+//  if (NumByteToRead <= 32 || !flash_dma_mode) {
+  if (NumByteToRead <= 1024 || !flash_dma_mode) {
+     while (NumByteToRead--) { // While there is data to be read
       // Read a byte from the FLASH
       *pBuffer = spi_flash_Rec();
       // Point to the next location where the byte read will be saved
